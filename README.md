@@ -87,6 +87,11 @@ This adapter is not affiliated with or endorsed by EcoSense / FTLab.
     ### **WORK IN PROGRESS**
 -->
 
+### 0.1.2 (2026-10-22)
+
+- (mrdimixx) object IDs from serial numbers and cloud field names now only contain letters, digits, `_` and `-` (dots and slashes are replaced as well)
+- (mrdimixx) dependencies updated
+
 ### 0.1.1 (2026-09-30)
 
 - (mrdimixx) maintenance: author e-mail, request timeout via AbortSignal instead of setTimeout, CI actions updated

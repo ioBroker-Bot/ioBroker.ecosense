@@ -8,7 +8,7 @@ const { EcoSenseClient, EcoSenseAuthError } = require('../lib/api');
 // adapter-core needs a js-controller installation – replace it by a stub for unit tests
 const corePath = require.resolve('@iobroker/adapter-core');
 require.cache[corePath] = { id: corePath, filename: corePath, loaded: true, exports: { Adapter: class {} } };
-const { Ecosense } = require('../main');
+const { Ecosense, sanitizeId } = require('../main');
 
 const realFetch = global.fetch;
 
@@ -145,6 +145,23 @@ describe('Adapter state mapping', () => {
         const { ctx, objects } = fakeAdapter();
         await ctx.updateDevice({ serial_number: 'EQ*1', radon_level: 50 });
         assert.ok(objects['EQ_1']);
+    });
+
+    it('replaces dots and slashes so no extra object levels are created', async () => {
+        const { ctx, objects, states } = fakeAdapter();
+        await ctx.updateDevice({ serial_number: 'EQ.1/2', radon_level: 50, 'firmware.version': '1.0', 'a/b': 1 });
+        assert.ok(objects['EQ_1_2']);
+        assert.strictEqual(states['EQ_1_2.raw.firmware_version'], '1.0');
+        assert.strictEqual(states['EQ_1_2.raw.a_b'], 1);
+        for (const id of Object.keys(objects).concat(Object.keys(states))) {
+            assert.ok(!id.split('.').some(part => part === ''), `empty ID segment in ${id}`);
+        }
+    });
+
+    it('sanitizeId keeps only letters, digits, "_" and "-"', () => {
+        assert.strictEqual(sanitizeId('IL24EQ000000'), 'IL24EQ000000');
+        assert.strictEqual(sanitizeId('radon_dou'), 'radon_dou');
+        assert.strictEqual(sanitizeId('a.b/c d:e'), 'a_b_c_d_e');
     });
 
     // structure as delivered by the real cloud (values anonymised)

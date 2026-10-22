@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "ecosense",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "news": {
+      "0.1.2": {
+        "en": "object IDs from serial numbers and cloud field names now only contain letters, digits, \"_\" and \"-\"",
+        "de": "Objekt-IDs aus Seriennummern und Cloud-Feldnamen enthalten jetzt nur noch Buchstaben, Ziffern, \"_\" und \"-\"",
+        "ru": "ID объектов из серийных номеров и имён полей облака теперь содержат только буквы, цифры, \"_\" и \"-\"",
+        "pt": "os IDs de objetos gerados a partir de números de série e nomes de campos da nuvem agora contêm apenas letras, dígitos, \"_\" e \"-\"",
+        "nl": "object-ID's uit serienummers en cloud-veldnamen bevatten nu alleen letters, cijfers, \"_\" en \"-\"",
+        "fr": "les ID d'objets issus des numéros de série et des noms de champs du cloud ne contiennent plus que des lettres, des chiffres, \"_\" et \"-\"",
+        "it": "gli ID degli oggetti derivati da numeri di serie e nomi dei campi del cloud ora contengono solo lettere, cifre, \"_\" e \"-\"",
+        "es": "los ID de objetos generados a partir de números de serie y nombres de campos de la nube ahora solo contienen letras, dígitos, \"_\" y \"-\"",
+        "pl": "identyfikatory obiektów z numerów seryjnych i nazw pól chmury zawierają teraz tylko litery, cyfry, \"_\" i \"-\"",
+        "uk": "ID об'єктів із серійних номерів та імен полів хмари тепер містять лише літери, цифри, \"_\" і \"-\"",
+        "zh-cn": "由序列号和云端字段名生成的对象 ID 现在只包含字母、数字、\"_\" 和 \"-\""
+      },
       "0.1.1": {
         "en": "maintenance: fixes from the ioBroker repository checker, releases are now published with npm provenance",
         "de": "Wartung: Korrekturen aus dem ioBroker-Repository-Checker, Veröffentlichung jetzt mit npm-Provenance",

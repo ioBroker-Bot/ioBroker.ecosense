@@ -13,6 +13,18 @@ const LEVEL_TEXT = { 0: 'green', 1: 'orange', 2: 'red' };
 // Cognito errors that will not go away by retrying
 const FATAL_AUTH_CODES = ['NotAuthorizedException', 'UserNotFoundException', 'NewPasswordRequired', 'MfaRequired'];
 
+/**
+ * Turns an external value (serial number, API field name) into a safe single object ID segment.
+ * Everything except letters, digits, "_" and "-" is replaced – including "." and "/",
+ * which would otherwise create unwanted levels in the object tree.
+ *
+ * @param {string} text
+ * @returns {string}
+ */
+function sanitizeId(text) {
+    return String(text).replace(/[^a-zA-Z0-9_-]/g, '_');
+}
+
 class Ecosense extends utils.Adapter {
     /**
      * @param {Partial<utils.AdapterOptions>} [options]
@@ -107,7 +119,7 @@ class Ecosense extends utils.Adapter {
             this.log.warn('Ignoring device without serial number');
             return;
         }
-        const devId = serial.replace(this.FORBIDDEN_CHARS, '_');
+        const devId = sanitizeId(serial);
         const clean = sanitizeDevice(device);
 
         await this.ensureObject(devId, {
@@ -188,7 +200,7 @@ class Ecosense extends utils.Adapter {
             }
             const type = typeof value === 'number' ? 'number' : typeof value === 'boolean' ? 'boolean' : 'string';
             const role = type === 'number' ? 'value' : type === 'boolean' ? 'indicator' : 'text';
-            await this.writeState(`${devId}.raw.${key.replace(this.FORBIDDEN_CHARS, '_')}`, value, {
+            await this.writeState(`${devId}.raw.${sanitizeId(key)}`, value, {
                 name: key,
                 type,
                 role,
@@ -242,6 +254,7 @@ class Ecosense extends utils.Adapter {
 if (require.main !== module) {
     module.exports = options => new Ecosense(options);
     module.exports.Ecosense = Ecosense; // for unit tests
+    module.exports.sanitizeId = sanitizeId; // for unit tests
 } else {
     new Ecosense();
 }
